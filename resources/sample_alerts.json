@@ -1,0 +1,92 @@
+[
+  {
+    "alert_id": "ALERT-001",
+    "timestamp": "2026-11-12T03:14:22Z",
+    "source": "Windows Security Log",
+    "event_id": 4625,
+    "rule_name": "Multiple failed logon attempts from external IP",
+    "original_severity": "medium",
+    "host": {
+      "hostname": "SRV-RDP-01",
+      "ip": "10.0.1.20"
+    },
+    "user": "administrator",
+    "indicators": [
+      { "type": "ip", "value": "83.172.35.6" }
+    ],
+    "description": "47 failed RDP logon attempts (Logon Type 10) for account 'administrator' within 5 minutes from a single external IP address.",
+    "raw_log": "EventID=4625 LogonType=10 TargetUserName=administrator IpAddress=83.172.35.6 FailureReason=%%2313 Status=0xC000006D Count=47 Window=5m"
+  },
+  {
+    "alert_id": "ALERT-002",
+    "timestamp": "2026-11-12T03:21:05Z",
+    "source": "Windows Security Log",
+    "event_id": 4624,
+    "rule_name": "Successful logon after multiple failures",
+    "original_severity": "high",
+    "host": {
+      "hostname": "SRV-RDP-01",
+      "ip": "10.0.1.20"
+    },
+    "user": "administrator",
+    "indicators": [
+      { "type": "ip", "value": "83.172.35.6" }
+    ],
+    "description": "Successful RDP logon (Logon Type 10) for account 'administrator' from the same external IP that generated 47 failed attempts a few minutes earlier (see ALERT-001).",
+    "raw_log": "EventID=4624 LogonType=10 TargetUserName=administrator IpAddress=83.172.35.6 LogonProcessName=User32 AuthenticationPackageName=Negotiate"
+  },
+  {
+    "alert_id": "ALERT-003",
+    "timestamp": "2026-11-12T09:42:51Z",
+    "source": "Suricata IDS",
+    "event_id": null,
+    "rule_name": "ET MALWARE Possible C2 Beacon - Periodic HTTP POST to Suspicious Host",
+    "original_severity": "high",
+    "host": {
+      "hostname": "WS-FINANCE-07",
+      "ip": "10.0.2.57"
+    },
+    "user": "m.ionescu",
+    "indicators": [
+      { "type": "ip", "value": "50.16.16.211" }
+    ],
+    "description": "Workstation sends small HTTP POST requests to an external IP every 60 seconds, a pattern typical for malware communicating with a command-and-control (C2) server.",
+    "raw_log": "{\"event_type\":\"alert\",\"src_ip\":\"10.0.2.57\",\"src_port\":51544,\"dest_ip\":\"50.16.16.211\",\"dest_port\":8080,\"proto\":\"TCP\",\"http\":{\"http_method\":\"POST\",\"url\":\"/gate.php\",\"length\":312},\"alert\":{\"signature_id\":2027000,\"signature\":\"ET MALWARE Possible C2 Beacon\",\"category\":\"A Network Trojan was detected\",\"severity\":1}}"
+  },
+  {
+    "alert_id": "ALERT-004",
+    "timestamp": "2026-11-12T11:08:37Z",
+    "source": "Microsoft Defender for Endpoint",
+    "event_id": null,
+    "rule_name": "Suspicious file downloaded from email attachment",
+    "original_severity": "medium",
+    "host": {
+      "hostname": "WS-HR-03",
+      "ip": "10.0.3.14"
+    },
+    "user": "a.popescu",
+    "indicators": [
+      { "type": "hash", "value": "275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f" }
+    ],
+    "description": "User opened an email attachment named 'Invoice_November.zip'. The extracted file 'invoice.com' was flagged by antivirus heuristics.",
+    "raw_log": "FileName=invoice.com FolderPath=C:\\Users\\a.popescu\\Downloads\\Invoice_November\\ SHA256=275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f InitiatingProcess=OUTLOOK.EXE ActionTaken=Quarantined"
+  },
+  {
+    "alert_id": "ALERT-005",
+    "timestamp": "2026-11-12T14:30:12Z",
+    "source": "Firewall",
+    "event_id": null,
+    "rule_name": "Outbound DNS traffic to external resolver",
+    "original_severity": "low",
+    "host": {
+      "hostname": "WS-DEV-02",
+      "ip": "10.0.4.22"
+    },
+    "user": "d.stan",
+    "indicators": [
+      { "type": "ip", "value": "8.8.8.8" }
+    ],
+    "description": "Workstation sent DNS queries directly to an external DNS server instead of the internal corporate resolver.",
+    "raw_log": "action=allow proto=UDP src=10.0.4.22 sport=53211 dst=8.8.8.8 dport=53 bytes=74 rule=OUTBOUND-DNS-MONITOR"
+  }
+]
